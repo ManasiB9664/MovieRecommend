@@ -1,0 +1,285 @@
+/* =======================
+   🎨 NETFLIX THEME
+   ======================= */
+:root {
+    --bg-main: #141414;
+    --bg-card: #1f1f1f;
+    --bg-card-hover: #2a2a2a;
+
+    --accent: #e50914;
+    --accent-dark: #b20710;
+
+    --text-main: #ffffff;
+    --text-muted: #b3b3b3;
+
+    --border: rgba(255,255,255,0.08);
+}
+
+
+/* =======================
+   🌍 GLOBAL
+   ======================= */
+body {
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+    position: relative;
+    padding: 30px 0 60px;
+}
+
+h1 {
+    color: var(--accent);
+}
+
+
+/* =======================
+   🔁 STEPS
+   ======================= */
+.step { display: none; }
+.step.active { display: block; }
+
+
+/* =======================
+   📦 GRIDS
+   ======================= */
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin: 30px auto;
+}
+
+/* 🔥 FIXED spacing issue */
+.grid-movies {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 200px);
+    justify-content: center;
+
+    gap: 30px;              /* uniform spacing */
+    padding: 20px;
+}
+
+
+/* =======================
+   🧱 CARD BASE
+   ======================= */
+.card {
+    position: relative;
+    background: var(--bg-card);
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    z-index: 1;   /* prevents hover overlap issues */
+    overflow: visible;   /* allows icon outside card */
+}
+
+.card:hover {
+    background: var(--bg-card-hover);
+    transform: translateY(-3px);
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+}
+
+/* Selected state */
+.card.selected {
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+}
+
+/* Clean check indicator (no checkbox needed) */
+.card.selected::before {
+    content: "✔";
+
+    position: absolute;
+    top: -8px;        /* move OUTSIDE */
+    left: -8px;       /* move OUTSIDE */
+
+    background: var(--accent);
+    color: white;
+
+    font-size: 11px;
+    border-radius: 50%;
+
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg-main);
+    box-shadow: 0 0 6px rgba(0,0,0,0.6);
+}
+
+
+
+/* =======================
+   🎬 MOVIE CARD
+   ======================= */
+.movie-card {
+    width: 200px;
+    height: 190px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+/* HEADER */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 12px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 5px;
+}
+
+.lang {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+
+/* BODY */
+.card-body {
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    font-weight: bold;
+    padding: 5px;
+
+    overflow: hidden;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+
+
+/* FOOTER */
+.card-footer {
+    font-size: 11px;
+    color: var(--text-muted);
+
+    border-top: 1px solid var(--border);
+    padding-top: 5px;
+
+    overflow: hidden;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+
+
+/* =======================
+   ℹ️ INFO BUTTON
+   ======================= */
+.info-btn {
+    background: var(--accent);
+    color: white;
+
+    border: none;
+    border-radius: 50%;
+
+    width: 22px;
+    height: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    z-index: 3; /* always clickable above card */
+}
+
+.info-btn:hover {
+    background: var(--accent-dark);
+}
+
+
+/* =======================
+   🔘 BUTTONS
+   ======================= */
+button {
+    background: var(--accent);
+    color: white;
+
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+button:hover {
+    background: var(--accent-dark);
+}
+
+.top-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+
+/* =======================
+   🪟 MODAL
+   ======================= */
+.modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(6px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 999;
+}
+
+.hidden { display: none; }
+
+.modal-content {
+    background: #181818;
+    padding: 25px;
+    border-radius: 12px;
+    width: 50%;
+    max-width: 600px;
+    text-align: left;
+}
+
+.close {
+    float: right;
+    cursor: pointer;
+    font-size: 20px;
+}

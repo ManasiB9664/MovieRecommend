@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recommendations</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Recommended Movies</h1>
+
+    <div id="moviesContainer" class="grid-movies"></div>
+
+    <a href="/">
+        <button class="top-btn">Start Over</button>
+    </a>
+
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal hidden" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close" onclick="closeModal()">×</span>
+        <h2 id="modalTitle"></h2>
+        <p id="modalDetails"></p>
+    </div>
+</div>
+
+<!-- SAFE JSON -->
+<script id="movies-data" type="application/json">
+    {{ movies | tojson | safe }}
+</script>
+
+<script src="/static/js/script.js"></script>
+
+</body>
+</html>

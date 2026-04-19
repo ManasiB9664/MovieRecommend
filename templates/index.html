@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Recommender</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Movie Recommender</h1>
+
+    <!-- STEP 1 -->
+    <div class="step active" id="step1">
+        <h2>Select Languages</h2>
+
+        <div class="grid-3">
+            {% for code, name in languages %}
+                <div class="card selectable languages"
+                     data-value="{{code}}"
+                     onclick="toggleSelect(this)">
+                    {{name}}
+                </div>
+            {% endfor %}
+        </div>
+
+        <button class="top-btn" onclick="goToGenres()">Next</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step" id="step2">
+        <h2>Select 3 Genres</h2>
+
+        <div class="grid-3">
+            {% for g in genres %}
+                <div class="card selectable genres"
+                     data-value="{{g}}"
+                     onclick="toggleSelect(this)">
+                    {{g}}
+                </div>
+            {% endfor %}
+        </div>
+
+        <button class="top-btn" onclick="goToMovies()">Next</button>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step" id="step3">
+        <h2>Select 3 Movies</h2>
+
+        <div id="moviesContainer" class="grid-movies"></div>
+
+        <button class="top-btn" onclick="submitMovies()">Get Recommendations</button>
+    </div>
+
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal hidden" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close" onclick="closeModal()">×</span>
+        <h2 id="modalTitle"></h2>
+        <p id="modalDetails"></p>
+    </div>
+</div>
+
+<script src="/static/js/script.js"></script>
+
+</body>
+</html>
