@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Movie Recommendation System
 
 Steps:
@@ -10,3 +11,7 @@ Features:
 - Select 3 genres
 - Select 3 movies
 - Get recommendations
+=======
+# MovieRecommend
+To recommend movie using sckit learn
+>>>>>>> 92668d49de5746f05b92f221b4446ca71940d7ef
