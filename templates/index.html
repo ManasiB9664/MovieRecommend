@@ -7,6 +7,41 @@
 <body>
 
 <div class="container">
+<div id="customSearchBox" class="custom-box hidden">
+
+    <h2>Custom Movie Search</h2>
+
+    <!-- LANGUAGE DROPDOWN -->
+    <select id="customLanguage">
+        <option value="">Select Language</option>
+        {% for code, name in languages %}
+            <option value="{{code}}">{{name}}</option>
+        {% endfor %}
+    </select>
+
+    <!-- GENRE TAG INPUT -->
+    <div class="tag-container" id="genreTags"></div>
+
+    <select id="genreSelect">
+        <option value="">Add Genre</option>
+        {% for g in genres %}
+            <option value="{{g}}">{{g}}</option>
+        {% endfor %}
+    </select>
+
+    <!-- OPTIONAL -->
+    <input type="text" id="customCast" placeholder="Actor (optional)">
+    <input type="text" id="customDirector" placeholder="Director (optional)">
+    <input type="text" id="customKeywords" placeholder="Keywords (optional)">
+
+    <button onclick="runCustomSearch()">Search Movies</button>
+
+</div>
+
+
+    <button class="custom-btn" onclick="toggleCustomSearch()">
+    Custom Search
+    </button>
 
     <h1>Movie Recommender</h1>
 

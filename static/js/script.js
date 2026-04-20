@@ -1,9 +1,10 @@
 let selectedLanguages = [];
 let selectedGenres = [];
 let selectedMovies = [];
+let selectedCustomGenres = [];
 
 /* =======================
-   🌐 LANGUAGE MAP (FROM BACKEND)
+   🌐 LANGUAGE MAP
    ======================= */
 let LANGUAGE_MAP = {};
 
@@ -16,14 +17,12 @@ function getLangName(code) {
     return LANGUAGE_MAP[code] || code.toUpperCase();
 }
 
-
 /* =======================
    TOGGLE SELECT
    ======================= */
 function toggleSelect(el) {
     el.classList.toggle("selected");
 }
-
 
 /* =======================
    STEP NAVIGATION
@@ -61,9 +60,8 @@ function getSelected(type) {
         .map(el => el.dataset.value);
 }
 
-
 /* =======================
-   🎬 LOAD MOVIES (STEP 3)
+   🎬 LOAD MOVIES
    ======================= */
 function loadMovies() {
     let formData = new FormData();
@@ -76,15 +74,12 @@ function loadMovies() {
         body: formData
     })
     .then(res => res.json())
-    .then(data => {
-        renderMovieCards(data.movies, true);
-    })
+    .then(data => renderMovieCards(data.movies, true))
     .catch(err => console.error("Movie load error:", err));
 }
 
-
 /* =======================
-   🎯 RENDER MOVIE CARDS
+   🎬 RENDER MOVIE CARDS
    ======================= */
 function renderMovieCards(movies, selectable=false) {
     let container = document.getElementById("moviesContainer");
@@ -103,16 +98,13 @@ function renderMovieCards(movies, selectable=false) {
             </div>
 
             <div class="card-body">${m.title}</div>
-
             <div class="card-footer">${m.genres}</div>
         `;
 
-        /* Select movie */
         if (selectable) {
             div.onclick = () => toggleMovie(div, m.title);
         }
 
-        /* Info button */
         div.querySelector(".info-btn").onclick = (e) => {
             e.stopPropagation();
             openModal(m);
@@ -121,7 +113,6 @@ function renderMovieCards(movies, selectable=false) {
         container.appendChild(div);
     });
 }
-
 
 /* =======================
    🪟 MODAL
@@ -144,7 +135,6 @@ function closeModal() {
     document.getElementById("modal").classList.add("hidden");
 }
 
-
 /* =======================
    🎬 MOVIE SELECTION
    ======================= */
@@ -162,7 +152,6 @@ function toggleMovie(el, title) {
         selectedMovies.push(title);
     }
 }
-
 
 /* =======================
    🚀 SUBMIT
@@ -193,9 +182,8 @@ function addHidden(form, name, value) {
     form.appendChild(input);
 }
 
-
 /* =======================
-   ⭐ LOAD RECOMMENDATIONS
+   ⭐ LOAD RECOMMENDED PAGE
    ======================= */
 function loadRecommendedMovies() {
     const data = document.getElementById("movies-data");
@@ -209,5 +197,91 @@ function loadRecommendedMovies() {
     }
 }
 
-/* Auto run for result page */
+/* =======================
+   🔍 CUSTOM SEARCH
+   ======================= */
+function toggleCustomSearch() {
+    document.getElementById("customSearchBox").classList.toggle("hidden");
+}
+
+/* GENRE TAG SYSTEM */
+const genreSelect = document.getElementById("genreSelect");
+
+if (genreSelect) {
+    genreSelect.addEventListener("change", function() {
+        const val = this.value;
+        if (!val || selectedCustomGenres.includes(val)) return;
+
+        selectedCustomGenres.push(val);
+        renderTags();
+        this.value = "";
+    });
+}
+
+function renderTags() {
+    const container = document.getElementById("genreTags");
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    selectedCustomGenres.forEach(g => {
+        let tag = document.createElement("div");
+        tag.className = "tag";
+        tag.innerText = g + " ×";
+
+        tag.onclick = () => {
+            selectedCustomGenres = selectedCustomGenres.filter(x => x !== g);
+            renderTags();
+        };
+
+        container.appendChild(tag);
+    });
+}
+
+/* RUN CUSTOM SEARCH */
+function runCustomSearch() {
+    const language = document.getElementById("customLanguage").value;
+    const cast = document.getElementById("customCast").value;
+    const director = document.getElementById("customDirector").value;
+    const keywords = document.getElementById("customKeywords").value;
+
+    if (!language) {
+        alert("Language is required");
+        return;
+    }
+
+    if (selectedCustomGenres.length === 0) {
+        alert("Select at least one genre");
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append("language", language);
+    formData.append("genres", selectedCustomGenres.join(" "));
+    formData.append("cast", cast);
+    formData.append("director", director);
+    formData.append("keywords", keywords);
+
+    fetch('/custom_search', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        if (!data.movies || data.movies.length === 0) {
+            alert("No movies found. Try different filters.");
+            return;
+        }
+
+        switchStep(3);
+
+        selectedLanguages = [language];
+
+        renderMovieCards(data.movies, true);
+    })
+    .catch(err => console.error("Custom search error:", err));
+}
+
+/* AUTO LOAD */
 loadRecommendedMovies();
